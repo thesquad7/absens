@@ -19,7 +19,7 @@ class CreateMahasiswasTable extends Migration
             $table->string('name');
             $table->string('kelas_id')->nullable();
             $table->uuid('user_id')->nullable();
-            
+    
             $table->foreign('user_id')->references('id')->on('users')
                   ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('kelas_id')->references('id')->on('kelas')
