@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\MahasiswaController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -33,6 +34,11 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('user', [UserController::class, 'index']);
     Route::post('logout', [AuthController::class, 'logout']);
 
-});
+    //Api For Setting
+    Route::get('/tahun',[SettingController::class, 'tahun']);
+    Route::get('/matkul',[SettingController::class, 'matkul']);
 
+});
+Route::post('registrasi', [UserController::class, 'store']);
 Route::post('/login',[AuthController::class, 'login']);
+Route::get('/role',[SettingController::class, 'index']);

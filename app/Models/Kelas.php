@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Mahasiswa;
 
 class Kelas extends Model
 {
@@ -14,4 +15,11 @@ class Kelas extends Model
 	protected $fillable = [
 		'name',
 	];
+
+	public function mahasiswa()
+    {
+        return $this->hasMany(Mahasiswa::class);
+    }
+
+
 }

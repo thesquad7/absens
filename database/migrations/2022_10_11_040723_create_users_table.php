@@ -18,19 +18,17 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->rememberToken();
             $table->timestamps();
+            
         });
 
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->string('email')->unique()->nullable();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->string('id_pengguna')->nullable();
+            $table->boolean('first')->nullable()->default(true);
+            $table->string('id_pengguna')->unique();
             $table->integer('role_id')->nullable();
-        
-            $table->foreign('role_id')->references('id')->on('roles') 
-                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('role_id')->references('id')->on('roles')->onUpdate('cascade')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });

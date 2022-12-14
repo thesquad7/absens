@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Role;
 
 class User extends Authenticatable
 {
@@ -16,10 +17,10 @@ class User extends Authenticatable
     protected $fillable = [
         'id',
         'name',
-        'email',
         'password',
         'role_id',  
-        'id_pengguna'
+        'id_pengguna',
+        'first'
     ];
     protected $hidden = [
         'password',
@@ -31,6 +32,10 @@ class User extends Authenticatable
     public function mahasiswa()
     {
         return $this->belongsTo(Mahasiswa::class);
+    }
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
     public function getCreatedAtAttribute()
     {

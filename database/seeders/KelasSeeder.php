@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Kelas;
 use Illuminate\Database\Seeder;
-use Ramsey\Uuid\Uuid;
 
 class KelasSeeder extends Seeder
 {
@@ -16,7 +15,7 @@ class KelasSeeder extends Seeder
     public function run()
     {
         $data = new Kelas();
-        $data->id = Uuid::uuid4()->getHex();
+        $data->id = 1;
         $data->name = "D4RPL1";
         $data->save();
 

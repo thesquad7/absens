@@ -22,9 +22,21 @@ class AuthController extends Controller
         $user = User::where('id_pengguna', $request['id_pengguna'])->firstOrFail();
 
         $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()
+        $first = $user->first;
+        if($first == true){
+            User::where('id_pengguna', $request->id_pengguna)->update([
+                'first' => false,
+            ]);
+            return response()->json([
+                'first' => true,
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+            ]);
+            Auth::user()->save();
+        }else{
+            return response()
             ->json([
+                'first' => false,
                 'success' => true,
                 'message' => 'Hi '.$user->name.', Anda Sudah Login',
                 'user' => $user->name,
@@ -32,7 +44,9 @@ class AuthController extends Controller
                 'id'    => $user->id_pengguna,
                 'access_token' => $token,
                 'token_type' => 'Bearer', 
-            ]);   
+            ]);
+        }
+           
     }
     public function logout(Request $request) {
         if ($request->user()) { 

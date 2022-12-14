@@ -21,7 +21,7 @@ class MahasiswaController extends Controller
     public function index()
     {
         $data = Mahasiswa::all();
-        return response()->json(['Data Mahasiswa : ', MahasiswaResource::collection($data) ], Response::HTTP_OK);
+        return response()->json($data,Response::HTTP_OK);
     }
 
     /**
@@ -61,7 +61,7 @@ class MahasiswaController extends Controller
                 'id'    => Uuid::uuid4()->getHex(),
                 'nim'   => $request->nim,
                 'name'  => $request->name,
-                'kelas' => $request->kelas
+                'kelas' => $request->kelas_id
             ]);
             $response = [
                 'message'   => 'Mahasiswa Created',
@@ -89,7 +89,7 @@ class MahasiswaController extends Controller
         if (is_null($mahasiswa)) {
             return response()->json('Data not found', 404); 
         }
-        return response()->json(['Detail Mahasiswa : ', new MahasiswaResource($mahasiswa)]);
+        return response()->json($mahasiswa);
     }
 
     /**
