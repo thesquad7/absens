@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:absensi_anis/header/settings/modelcofiig.dart';
+import 'package:absensi_anis/page/login/State.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:dropdown_search/dropdown_search.dart';
@@ -19,6 +20,48 @@ class Register extends StatefulWidget {
 }
 
 class welcome extends State<Welcome> {
+  late TextEditingController? _id_pengguna;
+  late TextEditingController? _password;
+
+  @override
+  void initState() {
+    super.initState();
+    _id_pengguna = TextEditingController();
+    _password = TextEditingController();
+  }
+
+  Kirim() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    try {
+      var data = FormData.fromMap({
+        'id_pengguna': _id_pengguna?.text,
+        'password': _password?.text,
+      });
+
+      var dio = Dio();
+
+      dio.options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      Response response =
+          await dio.post('http://10.0.2.2:8000/api/login', data: data);
+      Map body = response.data;
+      print(body);
+      if (body['first'] == true) {
+        localStorage.setBool('state', body['first']);
+        localStorage.setString('token', body['access_token']);
+        localStorage.setString('user', body['user']);
+        localStorage.setString('user_id', body['id']);
+      } else {
+        localStorage.setString('token', body['access_token']);
+      }
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LoginState()),
+      );
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -42,6 +85,7 @@ class welcome extends State<Welcome> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   TextFormField(
+                    controller: _id_pengguna,
                     decoration: const InputDecoration(
                       hintText: 'merupakan NIP atau NIM?',
                       labelText: 'Username',
@@ -51,6 +95,7 @@ class welcome extends State<Welcome> {
                   ),
                   SizedBox(height: h * 0.04),
                   TextFormField(
+                    controller: _password,
                     decoration: const InputDecoration(
                       hintText: 'apa kamu masih ingat?',
                       labelText: 'Password',
@@ -73,7 +118,9 @@ class welcome extends State<Welcome> {
                         child: ElevatedButton(
                           style:
                               ElevatedButton.styleFrom(primary: Colors.green),
-                          onPressed: () {},
+                          onPressed: () {
+                            Kirim();
+                          },
                           child: Text("Masuk"),
                         ),
                       ),
@@ -209,7 +256,7 @@ class register extends State<Register> {
                       width: w * 0.85,
                       height: h * 0.082,
                       child: ListView(children: [
-                        DropdownSearch<RoleCart>(
+                        DropdownSearch<Dropdown>(
                           mode: Mode.MENU,
                           onChanged: (value) {
                             roledrop = value?.id;
@@ -229,10 +276,10 @@ class register extends State<Register> {
                               if (res.statusCode == 200) {
                                 List HTTPMatakuliah = json.decode(res.body);
                                 print(res.body);
-                                List<RoleCart> role = [];
+                                List<Dropdown> role = [];
                                 HTTPMatakuliah.forEach((element) {
                                   role.add(
-                                    RoleCart(
+                                    Dropdown(
                                         id: element["id"].toString(),
                                         name: element["name"]),
                                   );
