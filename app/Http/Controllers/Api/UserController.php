@@ -31,9 +31,46 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function first(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'name'              => 'required',
+            'tahun'                  => 'required',
+            'user_id'           => 'required',
+            'smester'              => 'required',
+            'kelas'               => 'required'
+        ],[
+            'name.require'                    =>'Name Tidak Boleh Kosong',
+            'tahun.require'                    =>'Tahun Tidak Boleh Kosong',
+            'user_id.required'                         =>'id tidak boleh kosong',
+            'smester.required'                     =>'smester tidak boleh kosong',
+            'kelas.required'                      =>'kelas tidak boleh kosong'        
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors(), 
+            Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        try
+        {
+            Mahasiswa::where('name', $request->name)->update([
+                'user_id' => $request->user_id,
+                'semester' => $request->smester,
+                'tahun_id' => $request->tahun,
+                'kelas_id' => $request->kelas,
+            ]);
+            $response = [
+                'message'   => 'Akut berhasil diperbaharui',
+                'success' => true
+            ];
+            return response()->json($response, Response::HTTP_CREATED);
+            }
+        catch(QueryException $e)
+        {
+            return response()->json([
+                'message' => "Failed" . $e->errorInfo
+            ]);
+        }
+        
     }
 
     /**
@@ -62,15 +99,26 @@ class UserController extends Controller
         }
         try
         {
-            $user = User::create([
-                'id'    => Uuid::uuid4()->getHex(),
-                'id_pengguna'   => $request->id_pengguna,
-                'name'  => $request->name,
-                'password' => Hash::make($request->password),
-                'role_id' => $request->role_id,
-                'first' => 1
-
-            ]);
+            if($request->role_id == 1){
+                $user = User::create([
+                    'id'    => Uuid::uuid4()->getHex(),
+                    'id_pengguna'   => $request->id_pengguna,
+                    'name'  => $request->name,
+                    'password' => Hash::make($request->password),
+                    'role_id' => $request->role_id,
+                    'first' => 1
+                ]);
+                
+            }else{
+                $user = User::create([
+                    'id'    => Uuid::uuid4()->getHex(),
+                    'id_pengguna'   => $request->id_pengguna,
+                    'name'  => $request->name,
+                    'password' => Hash::make($request->password),
+                    'role_id' => $request->role_id,
+                    'first' => 2
+                ]);
+            }
             $condition = $request->role_id;
             if($condition == 1){
                 $dosen = Dosen::create(
@@ -140,7 +188,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
     /**

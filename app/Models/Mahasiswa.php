@@ -12,7 +12,7 @@ class Mahasiswa extends Model
     public $incrementing = false;
     protected $table = 'mahasiswas';
     protected $fillable = [
-        'id', 'nim', 'name', 'kelas_id','user_id', 'tahun_id',
+        'id', 'nim', 'name', 'kelas_id','user_id', 'tahun_id','smester',
     ];
     public function user()
     {

@@ -23,7 +23,8 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::group(['middleware' => 'auth:sanctum'], function(){
-
+    
+    //Mahasiswa CRUD
     Route::get('mahasiswa', [MahasiswaController::class, 'index']);
     Route::get('mahasiswa/{id}', [MahasiswaController::class,'show']);
     Route::post('mahasiswa', [MahasiswaController::class, 'store']);
@@ -37,8 +38,12 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     //Api For Setting
     Route::get('/tahun',[SettingController::class, 'tahun']);
     Route::get('/matkul',[SettingController::class, 'matkul']);
+    Route::get('/smester',[SettingController::class, 'smester']);
+    Route::get('/kelas',[SettingController::class, 'kelas']);
 
+    //API Memulai
+    Route::post('first', [UserController::class, 'first']);
 });
 Route::post('registrasi', [UserController::class, 'store']);
 Route::post('/login',[AuthController::class, 'login']);
-Route::get('/role',[SettingController::class, 'index']);
+Route::get('/role',[SettingController::class, 'role']);

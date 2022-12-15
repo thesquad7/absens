@@ -17,9 +17,12 @@ class CreateMahasiswasTable extends Migration
             $table->uuid('id')->primary();
             $table->string('nim');
             $table->string('name');
-            $table->string('kelas_id')->nullable();
+            $table->uuid('kelas_id')->nullable();
             $table->uuid('user_id')->nullable();
             $table->uuid('tahun_id')->nullable();
+            $table->uuid('semester')->nullable();
+            $table->foreign('semester')->references('id')->on('semesters')
+            ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('tahun_id')->references('id')->on('tahunajars')
               ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')
