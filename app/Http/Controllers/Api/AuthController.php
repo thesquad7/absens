@@ -27,16 +27,17 @@ class AuthController extends Controller
             User::where('id_pengguna', $request->id_pengguna)->update([
                 'first' => false,
             ]);
-            return response()->json([
-                'first' => true,
-                'user' => $user->name,
-                'id'    => $user->id,
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-            ]);
-            Auth::user()->save();
-        }else{
-            return response()
+            if($user->role_id == 2){
+                return response()->json([
+                    'first' => true,
+                    'user' => $user->name,
+                    'id'    => $user->id,
+                    'role' =>$user->role_id,
+                    'access_token' => $token,
+                    'token_type' => 'Bearer',
+                ]);
+            }if($user->role_id == 1){
+                return response()
             ->json([
                 'first' => false,
                 'success' => true,
@@ -47,6 +48,36 @@ class AuthController extends Controller
                 'access_token' => $token,
                 'token_type' => 'Bearer', 
             ]);
+            }
+            Auth::user()->save();
+        }else{
+            if($user->role_id == 1){
+                $keterang = Dosen::where('name', $user->name)->firstOrFail();
+
+                return response()
+            ->json([
+                'first' => false,
+                'success' => true,
+                'message' => 'Hi '.$user->name.', Anda Sudah Login',
+                'user' => $user->name,
+                'role' =>$user->role_id,
+                'id'    => $user->id_pengguna,
+                'access_token' => $token,
+                'token_type' => 'Bearer', 
+            ]);
+            }if($user->role_id ==2){
+                return response()
+                ->json([
+                    'first' => false,
+                    'success' => true,
+                    'message' => 'Hi '.$user->name.', Anda Sudah Login',
+                    'user' => $user->name,
+                    'role' =>$user->role_id,
+                    'id'    => $user->id_pengguna,
+                    'access_token' => $token,
+                    'token_type' => 'Bearer', 
+                ]);
+            }
         }
            
     }

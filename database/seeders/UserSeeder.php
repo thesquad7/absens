@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         $data->id_pengguna  = "anis";
         $data->password = bcrypt("rplanis20");
         $data->role_id = 1;
-        $data->first = 0;
+        $data->first = 1;
         $data->save();
 
         $data = new User();

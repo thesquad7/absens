@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Mahasiswa;
+use App\Models\Dosen;
 use Illuminate\Database\Seeder;
 use Ramsey\Uuid\Uuid;
 
@@ -15,6 +16,13 @@ class MahasiswaSeeder extends Seeder
      */
     public function run()
     {
+        $data = new Dosen();
+        $data->id           = Uuid::uuid4()->getHex();
+        $data->nip           = '2005001XXXXXXX';
+        $data->keterangan     ="Dosen Polindra";
+        $data->name         = "M. Anis Hilmi";
+        $data->save();
+
         $data = new Mahasiswa();
         $data->id           = Uuid::uuid4()->getHex();
         $data->nim           = '2005001';
