@@ -99,7 +99,7 @@ class UserController extends Controller
         }
         try
         {
-            if($request->role_id == 1){
+            if($request->role_id == 2){
                 $user = User::create([
                     'id'    => Uuid::uuid4()->getHex(),
                     'id_pengguna'   => $request->id_pengguna,
@@ -116,7 +116,7 @@ class UserController extends Controller
                     'name'  => $request->name,
                     'password' => Hash::make($request->password),
                     'role_id' => $request->role_id,
-                    'first' => 2
+                    'first' => 0
                 ]);
             }
             $condition = $request->role_id;
