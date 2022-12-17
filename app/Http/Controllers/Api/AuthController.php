@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Dosen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,6 +38,7 @@ class AuthController extends Controller
                     'token_type' => 'Bearer',
                 ]);
             }if($user->role_id == 1){
+                Dosen::where('name', $user->name)->update(['user_id' => $user->id]);
                 return response()
             ->json([
                 'first' => false,
@@ -52,14 +54,14 @@ class AuthController extends Controller
             Auth::user()->save();
         }else{
             if($user->role_id == 1){
-                $keterang = Dosen::where('name', $user->name)->firstOrFail();
-
+                $keterangan = Dosen::where('name', $user->name)->firstOrFail();
                 return response()
             ->json([
                 'first' => false,
                 'success' => true,
                 'message' => 'Hi '.$user->name.', Anda Sudah Login',
                 'user' => $user->name,
+                'keterangan' => $keterangan-> keterangan,
                 'role' =>$user->role_id,
                 'id'    => $user->id_pengguna,
                 'access_token' => $token,
