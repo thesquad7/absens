@@ -152,6 +152,23 @@ class mahasiswa extends State<Mahasiswa> {
 }
 
 class dosen extends State<Dosen> {
+  String? keterangan, name;
+  readPreference() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var idSP = localStorage.getString('keterangan');
+    var nameSP = localStorage.getString('user');
+    setState(() {
+      keterangan = idSP;
+      name = nameSP;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    readPreference();
+  }
+
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -189,14 +206,14 @@ class dosen extends State<Dosen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Dosen",
+                            name.toString(),
                             style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
                           Text(
-                            "Dosen",
+                            keterangan.toString(),
                             style: TextStyle(fontSize: 15),
                           )
                         ]),
@@ -208,14 +225,13 @@ class dosen extends State<Dosen> {
           Container(
             width: w * 1,
             height: h * 0.6,
-            color: Colors.blue,
             child: Column(children: [
               Container(
                 height: h * 0.05,
                 color: Colors.green,
                 child: Center(
                     child: Text(
-                  "Hi! kamu sedang berada di dasboard E-Absens",
+                  "Hi! $name kamu sedang berada di dasboard E-Absens",
                 )),
               ),
               SizedBox(height: h * 0.1),
@@ -232,14 +248,48 @@ class dosen extends State<Dosen> {
                           width: w * 0.3,
                           height: h * 0.15,
                           child: Card(
-                            elevation: 4,
+                            elevation: 6,
+                            child: InkWell(
+                              onTap: () {},
+                              child: Center(
+                                child: Container(
+                                    child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Icon(
+                                      Icons.person_add,
+                                      size: 70,
+                                    ),
+                                    Text("Input Mahasiswa")
+                                  ],
+                                )),
+                              ),
+                            ),
                           ),
                         ),
                         Container(
                           width: w * 0.3,
                           height: h * 0.15,
                           child: Card(
-                            elevation: 4,
+                            elevation: 6,
+                            child: InkWell(
+                              onTap: () {},
+                              child: Center(
+                                child: Container(
+                                    child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Icon(
+                                      Icons.calendar_month,
+                                      size: 70,
+                                    ),
+                                    Text("Jadwal")
+                                  ],
+                                )),
+                              ),
+                            ),
                           ),
                         )
                       ],
@@ -251,21 +301,66 @@ class dosen extends State<Dosen> {
                           width: w * 0.3,
                           height: h * 0.15,
                           child: Card(
-                            elevation: 4,
+                            elevation: 6,
+                            child: InkWell(
+                              onTap: () {},
+                              child: Center(
+                                child: Container(
+                                    child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Icon(
+                                      Icons.how_to_reg,
+                                      size: 70,
+                                    ),
+                                    Text("Cek Absensi")
+                                  ],
+                                )),
+                              ),
+                            ),
                           ),
                         ),
                         Container(
                           width: w * 0.3,
                           height: h * 0.15,
                           child: Card(
-                            elevation: 4,
+                            elevation: 6,
+                            child: InkWell(
+                              onTap: () {},
+                              child: Center(
+                                child: Container(
+                                    child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Icon(
+                                      Icons.download,
+                                      size: 70,
+                                    ),
+                                    Text("Cetak Laporan")
+                                  ],
+                                )),
+                              ),
+                            ),
                           ),
                         )
                       ],
-                    )
+                    ),
                   ],
                 ),
-              )
+              ),
+              SizedBox(
+                height: h * 0.05,
+              ),
+              Container(
+                height: h * 0.05,
+                child: Center(
+                    child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text("Mau Keluar?"),
+                )),
+              ),
             ]),
           ),
         ],

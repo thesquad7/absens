@@ -50,11 +50,20 @@ class welcome extends State<Welcome> {
         localStorage.setString('user', body['user']);
         localStorage.setString('user_id', body['id']);
       } else {
-        localStorage.setBool('state', false);
-        localStorage.setString('token', body['access_token']);
-        localStorage.setString('user', body['user']);
-        localStorage.setString('user_id', body['id']);
-        localStorage.setString('status', body['role'].toString());
+        if (body['role'] == 1) {
+          localStorage.setBool('state', false);
+          localStorage.setString('token', body['access_token']);
+          localStorage.setString('keterangan', body['keterangan']);
+          localStorage.setString('user', body['user']);
+          localStorage.setString('user_id', body['id']);
+          localStorage.setString('status', body['role'].toString());
+        } else {
+          localStorage.setBool('state', false);
+          localStorage.setString('token', body['access_token']);
+          localStorage.setString('user', body['user']);
+          localStorage.setString('user_id', body['id']);
+          localStorage.setString('status', body['role'].toString());
+        }
       }
       Navigator.push(
         context,
