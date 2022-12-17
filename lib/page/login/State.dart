@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:absensi_anis/header/settings/modelcofiig.dart';
+import 'package:absensi_anis/page/login/dasboard.dart';
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:http/http.dart' as http;
@@ -286,10 +287,38 @@ class update extends State<UpdateAccount> {
 }
 
 class home extends State<Home> {
+  String? role;
+  readPreference() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var stateSP = localStorage.getString('status');
+    setState(() {
+      role = stateSP!;
+    });
+  }
+
+  DasboardView() {
+    if (role == '1') {
+      return Dosen();
+    }
+    if (role == '2') {
+      return Mahasiswa();
+    } else {
+      return Center(
+        child: Text("Terjadi Kesalahan"),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    readPreference();
+  }
+
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
-    return Scaffold();
+    return Scaffold(body: DasboardView());
   }
 }

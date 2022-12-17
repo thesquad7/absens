@@ -44,11 +44,18 @@ class welcome extends State<Welcome> {
       Response response =
           await dio.post('http://10.0.2.2:8000/api/login', data: data);
       Map body = response.data;
-      print(body);
-      localStorage.setBool('state', body['first']);
-      localStorage.setString('token', body['access_token']);
-      localStorage.setString('user', body['user']);
-      localStorage.setString('user_id', body['id']);
+      if (body['first'] == true && body['role'] == 2) {
+        localStorage.setBool('state', body['first']);
+        localStorage.setString('token', body['access_token']);
+        localStorage.setString('user', body['user']);
+        localStorage.setString('user_id', body['id']);
+      } else {
+        localStorage.setBool('state', false);
+        localStorage.setString('token', body['access_token']);
+        localStorage.setString('user', body['user']);
+        localStorage.setString('user_id', body['id']);
+        localStorage.setString('status', body['role'].toString());
+      }
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => LoginState()),
