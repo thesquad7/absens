@@ -91,6 +91,9 @@ class update extends State<UpdateAccount> {
           context,
           MaterialPageRoute(builder: (context) => Home()),
         );
+        setState(() {
+          loginstate().state = false;
+        });
       }
     } catch (e) {
       print(e.toString());
