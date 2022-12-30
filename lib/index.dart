@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:absensi_anis/header/settings/modelcofiig.dart';
 import 'package:absensi_anis/page/login/State.dart';
+import 'package:absensi_anis/page/ngrockdata.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:dropdown_search/dropdown_search.dart';
@@ -30,6 +31,21 @@ class welcome extends State<Welcome> {
     _password = TextEditingController();
   }
 
+  _showMsg(msg) {
+    //
+    final snackBar = SnackBar(
+      // backgroundColor: Color(0xFF363f93),
+      content: Text(msg),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {
+          // Some code to undo the change!
+        },
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   Kirim() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     try {
@@ -42,15 +58,18 @@ class welcome extends State<Welcome> {
 
       dio.options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
       Response response =
-          await dio.post('http://10.0.2.2:8000/api/login', data: data);
+          await dio.post(ngrok_client().link + '/api/login', data: data);
       Map body = response.data;
+      print(response.data);
       if (body['first'] == true && body['role'] == 2) {
         localStorage.setBool('state', body['first']);
         localStorage.setString('token', body['access_token']);
         localStorage.setString('user', body['user']);
+        localStorage.setString('status', body['role'].toString());
         localStorage.setString('user_id', body['id']);
       } else {
         if (body['role'] == 1) {
+          _showMsg(body['message']);
           localStorage.setBool('state', false);
           localStorage.setString('token', body['access_token']);
           localStorage.setString('keterangan', body['keterangan']);
@@ -58,6 +77,7 @@ class welcome extends State<Welcome> {
           localStorage.setString('user_id', body['id']);
           localStorage.setString('status', body['role'].toString());
         } else {
+          _showMsg(body['message']);
           localStorage.setBool('state', false);
           localStorage.setString('token', body['access_token']);
           localStorage.setString('user', body['user']);
@@ -65,12 +85,13 @@ class welcome extends State<Welcome> {
           localStorage.setString('status', body['role'].toString());
         }
       }
-      Navigator.push(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => LoginState()),
+        (Route<dynamic> route) => false,
       );
     } catch (e) {
-      print(e.toString());
+      _showMsg("Password Salah");
     }
   }
 
@@ -203,7 +224,7 @@ class register extends State<Register> {
 
       dio.options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
       Response response =
-          await dio.post('http://10.0.2.2:8000/api/registrasi', data: data);
+          await dio.post(ngrok_client().link + '/api/registrasi', data: data);
       Map body = response.data;
       print(response);
       Navigator.push(
@@ -283,11 +304,10 @@ class register extends State<Register> {
                           onFind: (text) async {
                             try {
                               final res = await http.get(
-                                Uri.parse('http://10.0.2.2:8000/api/role'),
+                                Uri.parse(ngrok_client().link + '/api/role'),
                               );
                               if (res.statusCode == 200) {
                                 List HTTPMatakuliah = json.decode(res.body);
-                                print(res.body);
                                 List<Dropdown> role = [];
                                 HTTPMatakuliah.forEach((element) {
                                   role.add(

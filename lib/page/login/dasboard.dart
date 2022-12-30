@@ -1,5 +1,12 @@
+import 'dart:convert';
+
+import 'package:absensi_anis/main.dart';
+import 'package:absensi_anis/page/login/Dosen/feature_Input_Data/main_button.dart';
+import 'package:absensi_anis/page/ngrockdata.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'Dosen/feature_Jadwal/main_button.dart';
 
 class Mahasiswa extends StatefulWidget {
   @override
@@ -21,6 +28,46 @@ class mahasiswa extends State<Mahasiswa> {
       id = idSP;
       name = nameSP;
     });
+  }
+
+  _showMsg(msg) {
+    //
+    final snackBar = SnackBar(
+      // backgroundColor: Color(0xFF363f93),
+      content: Text(msg),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {
+          // Some code to undo the change!
+        },
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  _logout() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('token');
+    try {
+      final res = await http.post(
+        Uri.parse(ngrok_client().link + '/api/logout'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        _showMsg(data['msg']);
+        localStorage.clear();
+      } else {
+        throw Exception(_showMsg("Terjadi Kesalahan"));
+      }
+    } catch (e) {
+      _showMsg(e.toString());
+    }
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => AuthPage()),
+        (Route route) => false);
   }
 
   @override
@@ -137,13 +184,44 @@ class mahasiswa extends State<Mahasiswa> {
                           child: Card(
                             elevation: 4,
                           ),
-                        )
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
-              )
+              ),
             ]),
+          ),
+          SizedBox(
+            height: h * 0.05,
+          ),
+          Container(
+            height: h * 0.05,
+            child: Center(
+                child: ElevatedButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: Text("Keluar"),
+                          content: Text(
+                              "Anda yakin ingin keluar, seluruh data lokal anda akan hilang"),
+                          actions: [
+                            TextButton(
+                                child: Text('Ya'),
+                                onPressed: () {
+                                  _logout();
+                                  Navigator.pop(context);
+                                }),
+                            TextButton(
+                              child: Text('Tidak'),
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                          ],
+                        ));
+              },
+              child: Text("Mau Keluar?"),
+            )),
           ),
         ],
       ),
@@ -161,6 +239,47 @@ class dosen extends State<Dosen> {
       keterangan = idSP;
       name = nameSP;
     });
+  }
+
+  _showMsg(msg) {
+    //
+    final snackBar = SnackBar(
+      // backgroundColor: Color(0xFF363f93),
+      content: Text(msg),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {
+          // Some code to undo the change!
+        },
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  _logout() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('token');
+    try {
+      final res = await http.post(
+        Uri.parse(ngrok_client().link + '/api/logout'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        _showMsg(data['msg']);
+        localStorage.clear();
+        localStorage.setString('msg', data['msg']);
+      } else {
+        throw Exception(_showMsg("Terjadi Kesalahan"));
+      }
+    } catch (e) {
+      _showMsg(e.toString());
+    }
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => AuthPage()),
+        (Route route) => false);
   }
 
   @override
@@ -250,7 +369,13 @@ class dosen extends State<Dosen> {
                           child: Card(
                             elevation: 6,
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Feature()),
+                                );
+                              },
                               child: Center(
                                 child: Container(
                                     child: Column(
@@ -261,7 +386,7 @@ class dosen extends State<Dosen> {
                                       Icons.person_add,
                                       size: 70,
                                     ),
-                                    Text("Input Mahasiswa")
+                                    Text("Input Data")
                                   ],
                                 )),
                               ),
@@ -274,7 +399,13 @@ class dosen extends State<Dosen> {
                           child: Card(
                             elevation: 6,
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Schedule()),
+                                );
+                              },
                               child: Center(
                                 child: Container(
                                     child: Column(
@@ -357,7 +488,27 @@ class dosen extends State<Dosen> {
                 height: h * 0.05,
                 child: Center(
                     child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title: Text("Keluar"),
+                              content: Text(
+                                  "Anda yakin ingin keluar, seluruh data lokal anda akan hilang"),
+                              actions: [
+                                TextButton(
+                                    child: Text('Ya'),
+                                    onPressed: () {
+                                      _logout();
+                                      Navigator.pop(context);
+                                    }),
+                                TextButton(
+                                  child: Text('Tidak'),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                              ],
+                            ));
+                  },
                   child: Text("Mau Keluar?"),
                 )),
               ),

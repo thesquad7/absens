@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../ngrockdata.dart';
+
 class LoginState extends StatefulWidget {
   @override
   loginstate createState() => loginstate();
@@ -25,6 +27,20 @@ class Home extends StatefulWidget {
 
 class loginstate extends State<LoginState> {
   bool state = false;
+  _showMsg(msg) {
+    //
+    final snackBar = SnackBar(
+      // backgroundColor: Color(0xFF363f93),
+      content: Text(msg),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {
+          // Some code to undo the change!
+        },
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 
   readPreference() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -63,6 +79,21 @@ class update extends State<UpdateAccount> {
     });
   }
 
+  _showMsg(msg) {
+    //
+    final snackBar = SnackBar(
+      // backgroundColor: Color(0xFF363f93),
+      content: Text(msg),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {
+          // Some code to undo the change!
+        },
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -84,7 +115,7 @@ class update extends State<UpdateAccount> {
       dio.options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
       dio.options.headers['Authorization'] = 'Bearer $token';
       Response response =
-          await dio.post('http://10.0.2.2:8000/api/first', data: data);
+          await dio.post(ngrok_client().link + '/api/first', data: data);
       Map body = response.data;
       print(response);
       if (body['success'] == true) {
@@ -148,7 +179,7 @@ class update extends State<UpdateAccount> {
                 onFind: (text) async {
                   try {
                     final res = await http.get(
-                      Uri.parse('http://10.0.2.2:8000/api/kelas'),
+                      Uri.parse(ngrok_client().link + '/api/kelas'),
                       headers: {
                         'Authorization': 'Bearer $token',
                       },
@@ -195,7 +226,7 @@ class update extends State<UpdateAccount> {
                 onFind: (text) async {
                   try {
                     final res = await http.get(
-                      Uri.parse('http://10.0.2.2:8000/api/tahun'),
+                      Uri.parse(ngrok_client().link + '/api/tahun'),
                       headers: {
                         'Authorization': 'Bearer $token',
                       },
@@ -242,7 +273,7 @@ class update extends State<UpdateAccount> {
                 onFind: (text) async {
                   try {
                     final res = await http.get(
-                      Uri.parse('http://10.0.2.2:8000/api/smester'),
+                      Uri.parse(ngrok_client().link + '/api/smester'),
                       headers: {
                         'Authorization': 'Bearer $token',
                       },
@@ -294,6 +325,21 @@ class home extends State<Home> {
     setState(() {
       role = stateSP!;
     });
+  }
+
+  _showMsg(msg) {
+    //
+    final snackBar = SnackBar(
+      // backgroundColor: Color(0xFF363f93),
+      content: Text(msg),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {
+          // Some code to undo the change!
+        },
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   DasboardView() {
