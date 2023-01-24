@@ -15,11 +15,13 @@ return new class extends Migration
     {
         Schema::create('absensis', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('user_id');
+            $table->uuid('mahasiswa_id');
             $table->uuid('dosen_id');
             $table->uuid('matkul_id');
             $table->uuid('tahun_id');
             $table->foreign('dosen_id')->references('id')->on('users')
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('mahasiswa_id')->references('id')->on('mahasiswas')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->integer('status')->nullable();
             $table->foreign('matkul_id')->references('id')->on('matakuliahs')

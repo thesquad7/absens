@@ -40,6 +40,8 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('/matkul',[SettingController::class, 'matkul']);
     Route::get('/smester',[SettingController::class, 'smester']);
     Route::get('/kelas',[SettingController::class, 'kelas']);
+    //API Import
+    
 
     //API Memulai
     Route::post('first', [UserController::class, 'first']);
