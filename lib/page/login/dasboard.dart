@@ -233,7 +233,7 @@ class dosen extends State<Dosen> {
   String? keterangan, name;
   readPreference() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var idSP = localStorage.getString('keterangan');
+    var idSP = localStorage.getString('user_id');
     var nameSP = localStorage.getString('user');
     setState(() {
       keterangan = idSP;

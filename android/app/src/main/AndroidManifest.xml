@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.absensi_anis">
+    
+ <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="absensi_anis"
         android:name="${applicationName}"

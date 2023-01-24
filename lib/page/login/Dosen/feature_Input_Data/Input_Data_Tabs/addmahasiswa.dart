@@ -16,6 +16,7 @@ class addmahasiswa extends State<AddMahasiswa> {
   String? tahun, matkul, semester, token, kelas;
   String? tahunname, matkulname, semestername, kelasname;
   late TextEditingController? _name;
+  late TextEditingController? _nim;
   readPreference() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var stateSP = localStorage.getString('token');
@@ -29,6 +30,7 @@ class addmahasiswa extends State<AddMahasiswa> {
     super.initState();
     readPreference();
     _name = TextEditingController();
+    _nim = TextEditingController();
   }
 
   @override
@@ -96,7 +98,7 @@ class addmahasiswa extends State<AddMahasiswa> {
               ),
               SizedBox(height: h * 0.02),
               TextFormField(
-                controller: _name,
+                controller: _nim,
                 decoration: const InputDecoration(
                   hintText: 'menyesuaikan dengan RistekDikti?',
                   labelText: 'Nomor Induk Mahasiswa',
