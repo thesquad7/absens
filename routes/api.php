@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\SettingController;
+use App\Http\Controllers\Api\OutputController;
 use App\Http\Controllers\Api\MahasiswaController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -41,6 +42,10 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('/smester',[SettingController::class, 'smester']);
     Route::get('/kelas',[SettingController::class, 'kelas']);
     //API Import
+
+    //API Output
+    Route::get('/mahasiswa_data',[OutputController::class, 'mahasiswa']);
+
     
 
     //API Memulai
