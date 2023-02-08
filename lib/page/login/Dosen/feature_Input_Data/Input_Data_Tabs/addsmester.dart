@@ -40,7 +40,7 @@ class addsmemster extends State<AddSmester> {
       ),
       body: ListView(children: [
         Container(
-          height: h * 0.18,
+          height: h * 0.28,
           child: Card(
             child: Column(children: [
               Container(
@@ -60,6 +60,36 @@ class addsmemster extends State<AddSmester> {
                 ),
               ),
               SizedBox(height: h * 0.02),
+              Container(
+                height: h * 0.1,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: TextFormField(
+                        controller: _name,
+                        decoration: const InputDecoration(
+                          hintText: 'isi dengan angka',
+                          labelText: 'Tahun Semester',
+                          border: OutlineInputBorder(),
+                          icon: Icon(Icons.timelapse),
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: TextFormField(
+                        controller: _name,
+                        decoration: const InputDecoration(
+                          hintText: 'isi dengan angka',
+                          labelText: 'Keterangan',
+                          border: OutlineInputBorder(),
+                          icon: Icon(Icons.stacked_bar_chart),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ]),
             elevation: 10,
           ),

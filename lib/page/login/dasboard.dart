@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:absensi_anis/main.dart';
 import 'package:absensi_anis/page/login/Dosen/feature_Input_Data/main_button.dart';
+import 'package:absensi_anis/page/login/Dosen/feature_absensi/mainpage.dart';
 import 'package:absensi_anis/page/ngrockdata.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -434,7 +435,13 @@ class dosen extends State<Dosen> {
                           child: Card(
                             elevation: 6,
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Absen_Page()),
+                                );
+                              },
                               child: Center(
                                 child: Container(
                                     child: Column(

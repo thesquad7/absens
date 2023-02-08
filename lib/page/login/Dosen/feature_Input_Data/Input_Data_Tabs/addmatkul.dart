@@ -60,15 +60,36 @@ class addmatkul extends State<AddMatkul> {
                 ),
               ),
               SizedBox(height: h * 0.02),
-              TextFormField(
-                controller: _name,
-                decoration: const InputDecoration(
-                  hintText: 'sinopsis singkat',
-                  labelText: 'Keterangan',
-                  border: OutlineInputBorder(),
-                  icon: Icon(Icons.bookmark),
+              Container(
+                height: h * 0.1,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: TextFormField(
+                        controller: _name,
+                        decoration: const InputDecoration(
+                          hintText: 'isi dengan angka',
+                          labelText: 'Tahun Matakuliah',
+                          border: OutlineInputBorder(),
+                          icon: Icon(Icons.timelapse),
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: TextFormField(
+                        controller: _name,
+                        decoration: const InputDecoration(
+                          hintText: 'isi dengan angka',
+                          labelText: 'Keterangan',
+                          border: OutlineInputBorder(),
+                          icon: Icon(Icons.stacked_bar_chart),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
+              )
             ]),
             elevation: 10,
           ),
